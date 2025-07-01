@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Airbnb Guest Info</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --color-bg: #121212;
+    --color-text-primary: #f5f5f5;
+    --color-text-secondary: #c9b37e;
+    --color-accent: #c9b37e;
+    --max-width: 960px;
+    --border-radius: 12px;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; 
+    font-family: 'Roboto', sans-serif; 
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 4rem;
+  }
+  header {
+    max-width: var(--max-width);
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 2;
+  }
+  header h1 {
+    font-weight: 700;
+    font-size: 2.8rem;
+    margin-bottom: 0.3rem;
+    color: var(--color-text-primary);
+  }
+  header p {
+    font-weight: 400;
+    font-size: 1.15rem;
+    color: var(--color-text-secondary);
+    margin-top: 0;
+  }
+  .language-select {
+    margin-top: 1rem;
+  }
+  .language-select select {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    border: 1.5px solid #444;
+    background: #222;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.25s ease;
+    max-width: 300px;
+    width: 100%;
+  }
+  .language-select select:hover,
+  .language-select select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 6px var(--color-accent);
+    outline: none;
+  }
+
+  main {
+    max-width: var(--max-width);
+    width: 100%;
+    background: #1e1e1e;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 0.7);
+    padding: 3rem 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    z-index: 2;
+  }
+  section {
+    display: flex;
+    flex-direction: column;
+  }
+  section h2 {
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--color-accent);
+    margin-bottom: 1.25rem;
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+  }
+  li {
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 20px;
+  }
+  li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+  }
+  p {
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    margin: 0.4rem 0 0;
+  }
+  footer {
+    max-width: var(--max-width);
+    width: 100%;
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  html[dir="rtl"] {
+    direction: rtl;
+  }
+  html[dir="rtl"] main {
+    text-align: right;
+  }
+  html[dir="rtl"] li::before {
+    left: auto;
+    right: 0;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 960px) {
+    main {
+      padding: 2rem 2rem;
+    }
+  }
+
+  @media (max-width: 700px) {
+    main {
+      padding: 2rem 1.5rem;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    body {
+      padding: 1rem 0.5rem 2rem;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    header p {
+      font-size: 1rem;
+    }
+    section h2 {
+      font-size: 1.3rem;
+    }
+    ul, p {
+      font-size: 1rem;
+    }
+    main {
+      padding: 1.5rem 1rem;
+    }
+    .language-select select {
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="title">Welcome to Our Airbnb</h1>
+  <p id="welcome">We’re happy to have you here!</p>
+  <div class="language-select">
+    <select id="lang" onchange="changeLang()" aria-label="Select language">
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="ar">العربية</option>
+      <option value="es">Español</option>
+      <option value="de">Deutsch</option>
+      <option value="zh">中文</option>
+    </select>
+  </div>
+</header>
+
+<main>
+  <section>
+    <h2 id="rulesTitle">House Rules</h2>
+    <ul id="rulesList"></ul>
+  </section>
+
+  <section>
+    <h2 id="servicesTitle">Extra Services</h2>
+    <ul id="servicesList"></ul>
+  </section>
+
+  <section>
+    <h2 id="contactTitle">Contact</h2>
+    <p id="phone"></p>
+    <p id="host"></p>
+  </section>
+
+  <section>
+    <h2 id="reviewTitle">Kindly Leave a Review</h2>
+    <p id="reviewText"></p>
+  </section>
+</main>
+
+<footer>
+  <p id="thanks">Thank you for choosing us — enjoy your stay!</p>
+</footer>
+
+<script>
+  const content = {
+    en: {
+      title: "Welcome to Our Airbnb",
+      welcome: "We’re happy to have you here!",
+      rulesTitle: "House Rules",
+      rulesList: [
+        "Check-in: 15:00",
+        "Check-out: 12:00",
+        "No parties or events",
+        "Quiet hours: 23:00 - 07:00"
+      ],
+      contactTitle: "Contact",
+      phone: "Phone & WhatsApp: +212 603 095 466",
+      host: "Host: Adam",
+      servicesTitle: "Extra Services",
+      servicesList: [
+        "Car Rental",
+        "Airport Transfer",
+        "Other services upon request"
+      ],
+      reviewTitle: "Kindly Leave a Review",
+      reviewText: "We hope you enjoyed your stay! Please leave us a nice review on Airbnb or Booking.com.",
+      thanks: "Thank you for choosing us — enjoy your stay!"
+    },
+    fr: {
+      title: "Bienvenue dans notre Airbnb",
+      welcome: "Nous sommes ravis de vous accueillir !",
+      rulesTitle: "Règles de la maison",
+      rulesList: [
+        "Arrivée : 15h00",
+        "Départ : 12h00",
+        "Pas de fêtes ou d'événements",
+        "Heures calmes : 23h00 - 07h00"
+      ],
+      contactTitle: "Contact",
+      phone: "Téléphone & WhatsApp : +212 603 095 466",
+      host: "Hôte : Adam",
+      servicesTitle: "Services supplémentaires",
+      servicesList: [
+        "Location de voiture",
+        "Transfert aéroport",
+        "Autres services sur demande"
+      ],
+      reviewTitle: "Laissez un avis",
+      reviewText: "Nous espérons que vous avez apprécié votre séjour ! Merci de laisser un avis sur Airbnb ou Booking.",
+      thanks: "Merci de nous avoir choisis — profitez bien de votre séjour !"
+    },
+    ar: {
+      title: "مرحبًا بكم في Airbnb الخاص بنا",
+      welcome: "يسعدنا وجودكم معنا!",
+      rulesTitle: "قواعد المنزل",
+      rulesList: [
+        "تسجيل الوصول: 15:00",
+        "تسجيل المغادرة: 12:00",
+        "ممنوع إقامة الحفلات أو الفعاليات",
+        "أوقات الهدوء: من 23:00 إلى 07:00"
+      ],
+      contactTitle: "معلومات الاتصال",
+      phone: "الهاتف وواتساب: +212 603 095 466",
+      host: "المضيف: آدم",
+      servicesTitle: "خدمات إضافية",
+      servicesList: [
+        "تأجير سيارات",
+        "نقل من وإلى المطار",
+        "خدمات أخرى حسب الطلب"
+      ],
+      reviewTitle: "الرجاء ترك تقييم",
+      reviewText: "نتمنى أن تكون إقامتكم ممتعة! يرجى ترك تقييم لطيف على Airbnb أو Booking.",
+      thanks: "شكرًا لاختياركم لنا — إقامة سعيدة!"
+    },
+    es: {
+      title: "Bienvenidos a nuestro Airbnb",
+      welcome: "¡Estamos felices de tenerte aquí!",
+      rulesTitle: "Reglas de la casa",
+      rulesList: [
+        "Check-in: 15:00",
+        "Check-out: 12:00",
+        "No fiestas o eventos",
+        "Horas de silencio: 23:00 - 07:00"
+      ],
+      contactTitle: "Contacto",
+      phone: "Teléfono y WhatsApp: +212 603 095 466",
+      host: "Anfitrión: Adam",
+      servicesTitle: "Servicios extra",
+      servicesList: [
+        "Alquiler de coches",
+        "Traslado al aeropuerto",
+        "Otros servicios bajo petición"
+      ],
+      reviewTitle: "Por favor deja una reseña",
+      reviewText: "Esperamos que hayas disfrutado tu estadía. ¡Déjanos una reseña en Airbnb o Booking!",
+      thanks: "Gracias por elegirnos — ¡disfruta tu estadía!"
+    },
+    de: {
+      title: "Willkommen in unserem Airbnb",
+      welcome: "Wir freuen uns, Sie hier zu haben!",
+      rulesTitle: "Hausregeln",
+      rulesList: [
+        "Check-in: 15:00",
+        "Check-out: 12:00",
+        "Keine Partys oder Veranstaltungen",
+        "Ruhezeiten: 23:00 - 07:00"
+      ],
+      contactTitle: "Kontakt",
+      phone: "Telefon & WhatsApp: +212 603 095 466",
+      host: "Gastgeber: Adam",
+      servicesTitle: "Zusatzleistungen",
+      servicesList: [
+        "Autovermietung",
+        "Flughafentransfer",
+        "Weitere Dienste auf Anfrage"
+      ],
+      reviewTitle: "Bitte hinterlassen Sie eine Bewertung",
+      reviewText: "Wir hoffen, Ihr Aufenthalt war angenehm! Bitte hinterlassen Sie eine Bewertung auf Airbnb oder Booking.",
+      thanks: "Danke, dass Sie uns gewählt haben — genießen Sie Ihren Aufenthalt!"
+    },
+    zh: {
+      title: "欢迎来到我们的Airbnb",
+      welcome: "很高兴欢迎您的到来！",
+      rulesTitle: "房屋规则",
+      rulesList: [
+        "入住时间：15:00",
+        "退房时间：12:00",
+        "禁止聚会或活动",
+        "安静时间：23:00 - 07:00"
+      ],
+      contactTitle: "联系方式",
+      phone: "电话与WhatsApp: +212 603 095 466",
+      host: "房东：Adam",
+      servicesTitle: "额外服务",
+      servicesList: [
+        "租车服务",
+        "机场接送",
+        "可按需提供其他服务"
+      ],
+      reviewTitle: "请留下好评",
+      reviewText: "希望您度过了愉快的时光！欢迎在Airbnb或Booking上留下评论。",
+      thanks: "感谢您的选择 — 祝您入住愉快！"
+    }
+  };
+
+  function changeLang() {
+    const lang = document.getElementById("lang").value;
+    const c = content[lang];
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
+    document.getElementById("title").textContent = c.title;
+    document.getElementById("welcome").textContent = c.welcome;
+    document.getElementById("rulesTitle").textContent = c.rulesTitle;
+    document.getElementById("contactTitle").textContent = c.contactTitle;
+    document.getElementById("phone").textContent = c.phone;
+    document.getElementById("host").textContent = c.host;
+    document.getElementById("servicesTitle").textContent = c.servicesTitle;
+    document.getElementById("reviewTitle").textContent = c.reviewTitle;
+    document.getElementById("reviewText").textContent = c.reviewText;
+    document.getElementById("thanks").textContent = c.thanks;
+
+    const rulesList = document.getElementById("rulesList");
+    rulesList.innerHTML = "";
+    c.rulesList.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      rulesList.appendChild(li);
+    });
+
+    const servicesList = document.getElementById("servicesList");
+    servicesList.innerHTML = "";
+    c.servicesList.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      servicesList.appendChild(li);
+    });
+  }
+  window.onload = changeLang;
+</script>
+
+</body>
+</html>
